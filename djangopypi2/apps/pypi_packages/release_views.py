@@ -9,9 +9,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
-from ..pypi_ui.shortcuts import render_to_response
+from ..pypi_ui.shortcuts import render
 from .decorators import user_maintains_package, user_owns_package
 from .models import Package
 from .models import Release
@@ -89,10 +88,9 @@ def manage_metadata(request, package_name, version):
     else:
         form = form_class(initial=initial)
 
-    return render_to_response(
+    return render(request, 
         'pypi_packages/release_manage.html',
         dict(release=release, form=form),
-        context_instance = RequestContext(request),
         content_type         = settings.DEFAULT_CONTENT_TYPE,
     )
 
@@ -111,10 +109,9 @@ def manage_files(request, package_name, version):
     else:
         formset = formset_factory(instance=release)
 
-    return render_to_response(
+    return render(request, 
         'pypi_packages/release_manage_files.html',
         dict(release=release, formset=formset, upload_form=DistributionUploadForm()),
-        context_instance = RequestContext(request),
         content_type         = settings.DEFAULT_CONTENT_TYPE,
     )
 
@@ -134,9 +131,8 @@ def upload_file(request, package_name, version):
     else:
         form = DistributionUploadForm()
 
-    return render_to_response(
+    return render(request, 
         'pypi_packages/release_upload_file.html',
         dict(release=release, form=form),
-        context_instance = RequestContext(request),
         content_type         = settings.DEFAULT_CONTENT_TYPE,
     )

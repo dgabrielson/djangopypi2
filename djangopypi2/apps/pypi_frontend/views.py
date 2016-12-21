@@ -3,9 +3,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
 from django.views.generic.list import ListView
-from ..pypi_ui.shortcuts import render_to_response
+from ..pypi_ui.shortcuts import render
 from ..pypi_packages.models import Package
 from ..pypi_packages.models import Release
 from .models import MirrorSite
@@ -53,8 +52,8 @@ def simple_details(request, package_name):
     # to the proper url:
     if package.name != package_name:
         return HttpResponseRedirect(reverse('djangopypi2-simple-package-info', kwargs=dict(package_name=package.name)))
-    return render_to_response('pypi_frontend/package_detail_simple.html',
-                              context_instance=RequestContext(request, dict(package=package)),
+    return render(request, 'pypi_frontend/package_detail_simple.html',
+                              context=dict(package=package),
                               content_type='text/html')
 
 @_mirror_if_not_found('pypi')
@@ -65,12 +64,12 @@ def package_details(request, package_name):
 @_mirror_if_not_found('pypi')
 def package_doap(request, package_name):
     package = get_object_or_404(Package, name=package_name)
-    return render_to_response('pypi_frontend/package_doap.xml',
-                              context_instance=RequestContext(request, dict(package=package)),
+    return render(request, 'pypi_frontend/package_doap.xml',
+                              context=dict(package=package),
                               content_type='text/xml')
 
 def release_doap(request, package_name, version):
     release = get_object_or_404(Release, package__name=package_name, version=version)
-    return render_to_response('pypi_frontend/release_doap.xml',
-                              context_instance=RequestContext(request, dict(release=release)),
+    return render(request, 'pypi_frontend/release_doap.xml',
+                              context=dict(release=release),
                               content_type='text/xml')
