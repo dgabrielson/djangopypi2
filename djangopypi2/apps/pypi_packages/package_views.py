@@ -14,7 +14,6 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 
 from ..pypi_metadata.models import Classifier
-from ..pypi_ui.shortcuts import render_to_response
 
 from .decorators import user_maintains_package, user_owns_package
 from .models import Package, Release
