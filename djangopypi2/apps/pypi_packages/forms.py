@@ -42,7 +42,7 @@ class DistributionUploadForm(forms.ModelForm):
             log.error('%s does not exist', name)
             return content
         
-        if settings.DJANGOPYPI_ALLOW_VERSION_OVERWRITE:
+        if getattr(settings, 'DJANGOPYPI_ALLOW_VERSION_OVERWRITE', False):
             raise forms.ValidationError('Version overwrite is not yet handled')
         
         raise forms.ValidationError('That distribution already exists, please '
