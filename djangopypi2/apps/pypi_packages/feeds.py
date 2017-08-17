@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.shortcuts import get_object_or_404
 try:
     from django.contrib.syndication.views import Feed, FeedDoesNotExist

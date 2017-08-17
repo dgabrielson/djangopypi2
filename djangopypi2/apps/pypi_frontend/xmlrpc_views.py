@@ -1,4 +1,12 @@
-import xmlrpclib
+#######################
+from __future__ import unicode_literals, print_function
+#######################
+try:
+    # Python3
+    import xmlrpc.client as xmlrpclib
+except ImportError:
+    # Python2:
+    import xmlrpclib
 from django.http import HttpResponseNotAllowed, HttpResponse
 from ..pypi_packages.models import Package
 from ..pypi_packages.models import Release

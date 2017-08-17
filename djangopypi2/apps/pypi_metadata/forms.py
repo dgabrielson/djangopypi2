@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from .definitions import METADATA_LICENSES

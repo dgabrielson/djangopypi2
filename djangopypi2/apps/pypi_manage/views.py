@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.contrib.auth.decorators import login_required
 from ..pypi_ui.shortcuts import render
 

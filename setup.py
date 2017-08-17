@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import os
 from setuptools import setup, find_packages
 
@@ -43,7 +46,7 @@ setup(
     ],
 
     install_requires=[
-        'Django == 1.5.1',
+        'Django',
         'django-registration',
         'setuptools',
         'pkginfo',

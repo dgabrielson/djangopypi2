@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.contrib.auth import login, REDIRECT_FIELD_NAME
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.http import urlquote

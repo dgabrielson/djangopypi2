@@ -1,3 +1,7 @@
+#######################
+from __future__ import unicode_literals, print_function
+from django.utils import six
+#######################
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -78,7 +82,7 @@ def manage_metadata(request, package_name, version):
         
         if form.is_valid():
             for key, value in form.cleaned_data.iteritems():
-                if isinstance(value, basestring):
+                if isinstance(value, six.string_types):
                     release.package_info[key] = value
                 elif hasattr(value, '__iter__'):
                     release.package_info.setlist(key, list(value))

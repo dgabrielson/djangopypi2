@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import xmlrpclib
 
 from django.core.urlresolvers import resolve, reverse

@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import SingleObjectMixin

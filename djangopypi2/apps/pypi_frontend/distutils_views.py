@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import os
 import re
 import itertools
@@ -35,13 +38,13 @@ def register_or_upload(request):
         release = _get_release(request, package)
         _apply_metadata(request, release)
         response = _handle_uploads(request, release)
-    except BadRequest, error:
+    except BadRequest as error:
         log.error(error)
         return HttpResponseBadRequest(str(error), 'text/plain')
-    except Forbidden, error:
+    except Forbidden as error:
         log.error(error)
         return HttpResponseForbidden(str(error), 'text/plain')
-    except Exception, error:
+    except Exception as error:
         log.error(Exception)
         raise
 

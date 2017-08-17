@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import logging
 import urlparse
 from django.conf.urls import include, url

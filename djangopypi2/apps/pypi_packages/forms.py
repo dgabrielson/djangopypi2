@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import logging
 from os.path import basename
 from django import forms

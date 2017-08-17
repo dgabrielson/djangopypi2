@@ -2,6 +2,9 @@
 Management command for adding a package to the repository. Supposed to be the
 equivelant of calling easy_install, but the install target is the chishop.
 """
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 
 from __future__ import with_statement
 import os
@@ -61,7 +64,7 @@ added"""
             if path:
                 self._save_package(path, options["owner"])
             else:
-                print "Could not add %s. Not found." % label
+                print("Could not add %s. Not found." % label)
 
     def _save_package(self, path, ownerid):
         meta = self._get_meta(path)
@@ -76,7 +79,7 @@ added"""
 
         release = package.get_release(meta.version)
         if not isnewpackage and release and release.version == meta.version:
-            print "%s-%s already added" % (meta.name, meta.version)
+            print("%s-%s already added" % (meta.name, meta.version))
             return
 
         # algorithm as follows: If owner is given, try to grab user with that
@@ -100,7 +103,7 @@ added"""
                 pass
 
         if not owner:
-            print "No owner defined. Use --owner to force one"
+            print("No owner defined. Use --owner to force one")
             return
 
         # at this point we have metadata and an owner, can safely add it.
@@ -135,12 +138,12 @@ added"""
         dist_type = DistributionType.objects.get(key=dist_key)
         release.distributions.create(content=file, uploader=owner,
                                      filetype=dist_type)
-        print "%s-%s added" % (meta.name, meta.version)
+        print("%s-%s added" % (meta.name, meta.version))
 
     def _get_meta(self, path):
         data = pkginfo.get_metadata(path)
         if data:
             return data
         else:
-            print "Couldn't get metadata from %s. Not added to chishop" % os.path.basename(path)
+            print("Couldn't get metadata from %s. Not added to chishop" % os.path.basename(path))
             return None

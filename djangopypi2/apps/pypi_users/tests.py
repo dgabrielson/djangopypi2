@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import resolve, reverse

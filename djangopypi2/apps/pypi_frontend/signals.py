@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import logging
 from django.db.models import signals
 from django.utils.hashcompat import md5_constructor

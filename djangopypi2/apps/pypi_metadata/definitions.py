@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 METADATA_VERSIONS = {
     '1.0': ('platform','summary','description','keywords','home_page',
             'author','author_email', 'license', ),

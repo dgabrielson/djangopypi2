@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.conf.urls import include, url
 from .feeds import ReleaseFeed
 from . import package_views

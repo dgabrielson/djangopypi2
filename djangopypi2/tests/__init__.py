@@ -1,7 +1,10 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import os
 import unittest
 import xmlrpclib
-import StringIO
+from io import StringIO
 #from djangopypi.views import parse_distutils_request, simple
 from djangopypi.models import Package, Classifier, Release, PackageInfoField, Distribution
 from django.test.client import Client
@@ -55,13 +58,13 @@ def create_request(data):
     boundary = '--------------GHSKFJDLGDS7543FJKLFHRE75642756743254'
     sep_boundary = '\n--' + boundary
     end_boundary = sep_boundary + '--'
-    body = StringIO.StringIO()
+    body = StringIO()
     for key, value in data.items():
         # handle multiple entries for the same name
         if type(value) not in (type([]), type( () )):
             value = [value]
         for value in value:
-            value = unicode(value).encode("utf-8")
+            value = '{}'.format(value)
             body.write(sep_boundary)
             body.write('\nContent-Disposition: form-data; name="%s"'%key)
             body.write("\n\n")

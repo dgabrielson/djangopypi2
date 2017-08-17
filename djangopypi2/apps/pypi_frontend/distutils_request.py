@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from logging import getLogger
 from django.http import QueryDict
 from django.http import HttpResponseNotAllowed
@@ -58,13 +61,13 @@ def parse_distutils_request(request):
     request.POST = QueryDict('',mutable=True)
     try:
         request._files = MultiValueDict()
-    except Exception, e:
+    except Exception as e:
         pass
     
     for part in filter(lambda e: e.strip(), request.body.split(sep)):
         try:
             header, content = part.lstrip().split('\n',1)
-        except Exception, e:
+        except Exception as e:
             continue
 
         # normalize line endings:

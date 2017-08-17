@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 from django.http import HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login

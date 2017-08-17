@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 import errno
 import os
 import sys
@@ -7,7 +10,7 @@ from . import user_settings
 def ensure_directory(path):
     try:
         os.makedirs(path)
-    except OSError, os_error:
+    except OSError as os_error:
         if os_error.errno != errno.EEXIST:
             raise
     return path

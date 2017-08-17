@@ -1,3 +1,6 @@
+#######################
+from __future__ import unicode_literals, print_function
+#######################
 def debug(func):
     # @debug is handy when debugging distutils requests
     def _wrapped(*args, **kwargs):

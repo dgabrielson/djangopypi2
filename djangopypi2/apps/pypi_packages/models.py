@@ -1,3 +1,8 @@
+#######################
+from __future__ import unicode_literals, print_function
+from django.utils.encoding import python_2_unicode_compatible
+from django.utils import six
+#######################
 import os
 import json
 from logging import getLogger
@@ -53,7 +58,7 @@ class PackageInfoField(models.Field):
         super(PackageInfoField,self).__init__(*args, **kwargs)
 
     def to_python(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             if value:
                 return MultiValueDict(json.loads(value))
             else:
@@ -72,7 +77,7 @@ class PackageInfoField(models.Field):
             return json.dumps(dict(value.iterlists()), default = ClassifierSerializer)
         if isinstance(value, dict):
             return json.dumps(value)
-        if isinstance(value, basestring) or value is None:
+        if isinstance(value, six.string_types) or value is None:
             return value
 
         raise ValueError('Unexpected value encountered when preparing for database')
@@ -80,6 +85,7 @@ class PackageInfoField(models.Field):
     def get_internal_type(self):
         return 'TextField'
 
+@python_2_unicode_compatible
 class Package(models.Model):
     name = models.CharField(max_length=255, unique=True, primary_key=True,
                             editable=False)
@@ -96,7 +102,7 @@ class Package(models.Model):
         get_latest_by = "releases__latest"
         ordering = ['name',]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @models.permalink
@@ -143,7 +149,7 @@ class Package(models.Model):
             evaled = True
             qset = filter(lambda x: all(y in x.latest.description.lower() for y in description.lower().split()), qset)
         if classifier:
-            classifier = set(unicode(x) for x in classifier)
+            classifier = set('{}'.format(x) for x in classifier)
             if not evaled:
                 qset = list(qset)
             evaled = True
@@ -161,6 +167,7 @@ class Package(models.Model):
             result = qset
         return result
 
+@python_2_unicode_compatible
 class Release(models.Model):
     package = models.ForeignKey(Package, related_name="releases", editable=False)
     version = models.CharField(max_length=128, editable=False)
@@ -176,7 +183,7 @@ class Release(models.Model):
         get_latest_by = 'created'
         ordering = ['-created']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.release_name
 
     @property
@@ -228,6 +235,7 @@ def distribution_upload_path(instance, filename):
     configuration = Configuration.objects.latest()
     return os.path.join(str(configuration.upload_directory), filename)
 
+@python_2_unicode_compatible
 class Distribution(models.Model):
     release = models.ForeignKey(Release, related_name="distributions",
                                 editable=False)
@@ -264,7 +272,7 @@ class Distribution(models.Model):
         verbose_name_plural = _(u"distributions")
         unique_together = ("release", "filetype", "pyversion", "platform")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.filename
 
 
@@ -273,6 +281,7 @@ def handle_media_delete(instance, **kwargs):
     path = os.path.join(settings.MEDIA_ROOT, instance.path)
     log.info("Deleting file {}".format(path))
     os.remove(path)
+
 
 class Review(models.Model):
     release = models.ForeignKey(Release, related_name="reviews")
