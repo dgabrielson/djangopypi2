@@ -74,7 +74,7 @@ class PackageInfoField(models.Field):
 
     def get_prep_value(self, value):
         if isinstance(value, MultiValueDict):
-            return json.dumps(dict(value.iterlists()), default = ClassifierSerializer)
+            return json.dumps(dict(value.lists()), default = ClassifierSerializer)
         if isinstance(value, dict):
             return json.dumps(value)
         if isinstance(value, six.string_types) or value is None:

@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 
+import base64
+
 try:
     from functools import wraps, WRAPPER_ASSIGNMENTS
 except ImportError:
@@ -30,7 +32,7 @@ def _login_basic_auth(request):
     (authmeth, auth) = authentication.split(' ', 1)
     if authmeth.lower() != "basic":
         return
-    auth = auth.strip().decode("base64")
+    auth = base64.b64decode(auth.strip().encode('utf-8')).decode('utf-8')
     username, password = auth.split(":", 1)
     return authenticate(username=username, password=password)
 

@@ -110,12 +110,12 @@ def _apply_metadata(request, release):
     if 'classifiers' in request.POST:
         request.POST.setlist('classifier',request.POST.getlist('classifiers'))
     
-    release.package_info = MultiValueDict(dict(filter(lambda t: t[0] in fields,
-                                                      request.POST.iterlists())))
+    release.package_info = MultiValueDict(dict(list(filter(lambda t: t[0] in fields,
+                                                      request.POST.lists()))))
     
-    for key, value in release.package_info.iterlists():
+    for key, value in release.package_info.lists():
         release.package_info.setlist(key,
-                                     filter(lambda v: v != 'UNKNOWN', value))
+                                     list(filter(lambda v: v != 'UNKNOWN', value)))
     
     release.save()
 

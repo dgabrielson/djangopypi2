@@ -1,5 +1,6 @@
 #######################
 from __future__ import unicode_literals, print_function
+from django.utils import six
 #######################
 from logging import getLogger
 from django.http import QueryDict
@@ -23,7 +24,6 @@ def is_distutils_request(request):
 
 def handle_distutils_request(request):
     action = _get_distutils_action(request)
-
     if action not in ACTION_VIEWS:
         log.error('Invalid action encountered: %r', action)
         return HttpResponseNotAllowed(ACTION_VIEWS.keys())
@@ -50,7 +50,10 @@ def parse_distutils_request(request):
     
     One portion of this is the end marker: \r\n\r\n (what Django expects) 
     versus \n\n (what distutils is sending). 
-    """
+    """    
+    # This is completely borked in python3.
+    # request.body is of type bytes; not str.
+    
     # request.raw_post_data has been renamed request.body
     # see: https://code.djangoproject.com/ticket/17323
     try:
@@ -66,23 +69,26 @@ def parse_distutils_request(request):
     
     for part in filter(lambda e: e.strip(), request.body.split(sep)):
         try:
-            header, content = part.lstrip().split('\n',1)
+            header, content = part.lstrip().split(six.binary_type('\n', 'utf-8'),1)
         except Exception as e:
             continue
+        
+        if not six.PY2:
+            header = header.decode('utf-8')
 
         # normalize line endings:
         # newer distutils can submit \r\n end-of-line marks.
         if header.endswith('\r'):
             header = header[:-1]
             
-        if content.startswith('\r'):
+        if content.startswith(six.binary_type('\r', 'utf-8')):
             content = content[1:]
-        if content.startswith('\n'):
+        if content.startswith(six.binary_type('\n', 'utf-8')):
             content = content[1:]
         
-        if content.endswith('\n'):
+        if content.endswith(six.binary_type('\n', 'utf-8')):
             content = content[:-1]
-        if content.endswith('\r'):
+        if content.endswith(six.binary_type('\r', 'utf-8')):
             content = content[:-1]
 
         headers = _parse_header(header)
@@ -99,5 +105,7 @@ def parse_distutils_request(request):
             dist.seek(0)
             request.FILES.appendlist(headers['name'], dist)
         else:
-            request.POST.appendlist(headers["name"],content)
+            if not six.PY2:
+                content = content.decode('utf-8')
+            request.POST.appendlist(headers["name"], content)
     return

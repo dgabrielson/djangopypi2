@@ -2,13 +2,15 @@
 from __future__ import unicode_literals, print_function
 from django.utils.encoding import python_2_unicode_compatible
 #######################
+import json
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 def ClassifierSerializer(o):
     if isinstance(o, Classifier):
         return o.name
-    return o
+    raise TypeError("Cannot serialize " + str(type(o)))
+
 
 @python_2_unicode_compatible
 class Classifier(models.Model):

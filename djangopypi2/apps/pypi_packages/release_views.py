@@ -71,7 +71,7 @@ def manage_metadata(request, package_name, version):
     initial = {}
     multivalue = ('classifier',)
     
-    for key, values in release.package_info.iterlists():
+    for key, values in release.package_info.lists():
         if key in multivalue:
             initial[key] = values
         else:
@@ -81,7 +81,7 @@ def manage_metadata(request, package_name, version):
         form = form_class(data=request.POST, initial=initial)
         
         if form.is_valid():
-            for key, value in form.cleaned_data.iteritems():
+            for key, value in form.cleaned_data.items():
                 if isinstance(value, six.string_types):
                     release.package_info[key] = value
                 elif hasattr(value, '__iter__'):
